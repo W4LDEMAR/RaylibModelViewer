@@ -30,7 +30,7 @@ int main(void)
     //Vector ortogonal a la direccion de la camara
     Vector3 camDirectionRight = { 1,0,0 };
     //Velocidad de la camara
-    float camSpeed = 1;
+    float camSpeed = 3;
 
     SearchAndSetResourceDir("resources");
 
@@ -63,9 +63,9 @@ int main(void)
     {
         // Update Para manipular la camara
         //----------------------------------------------------------------------------------
-        UpdateCamera(&camera, CAMERA_FIRST_PERSON);
+        //UpdateCamera(&camera, CAMERA_FIRST_PERSON);
 
-        /*
+   
         camDirectionRight = Vector3Normalize(Vector3CrossProduct(camDirection, camera.up));
 
         if (IsKeyPressed(KEY_R))
@@ -91,10 +91,15 @@ int main(void)
 
         //Detectar movimiento de mouse
         Vector2 mousedelta = GetMouseDelta();
-        Matrix Mrot = MatrixRotateXYZ((Vector3) { mousedelta.y * -0.005f, mousedelta.x * -0.005f, 0 });
-        camDirection = Vector3Transform(camDirection, Mrot);
+        //Matrix Mrot = MatrixRotateXYZ((Vector3) { mousedelta.y * -0.005f, mousedelta.x * -0.005f, 0 });
+        //camDirection = Vector3Transform(camDirection, Mrot);
+
+        //Update para movimiento de camara y direccionamiento al mismo
+        float pitch = -mousedelta.y * 0.1 * GetFrameTime();
+        camDirection = Vector3RotateByAxisAngle(camDirection, camDirectionRight, pitch);
         camera.target = Vector3Add(camera.position, camDirection);
-        */
+        float yaw = -mousedelta.x * 0.1 * GetFrameTime();
+        camDirection = Vector3RotateByAxisAngle(camDirection, camera.up, yaw);
 
         //Para moverse en el eje Y
         if (IsKeyDown(KEY_Q))
